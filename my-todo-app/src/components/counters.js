@@ -7,4 +7,4 @@ export default function Counters({itemCount, uncheckedCount}){
         <span> Não checados: <span>{uncheckedCount}</span></span>
         </div>
     );
-};
+};                                 

@@ -16,37 +16,53 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+
+
+
+
 const Home = () => {
   const [elements, setElements] = useState([]);
-  const [count, checked] = useState(0);
+  const [itemCount, setItemCount] = useState(0);
+  const [uncheckedCount, setUncheckedCount] = useState(0);
 
   const addElements = () => {
-    setElements([...elements, { text: '', checked: false }]);
+    const newElements = ([...elements, { text: '', checked: false }]);
+  
+    setElements(newElements);
+    setItemCount(newElements.length);
+    countUnchecked(newElements);
   };
 
   const deleteElement = (index) => {
     const newElements = elements.filter((_, i) => i !== index);
+    
     setElements(newElements);
+    setItemCount(newElements.length);
+    countUnchecked(newElements);
   };
 
-  const counting = () => {
+  const countUnchecked = (elements) => {
+    const unchecked = elements.filter(element => !element.checked).length;
+    setUncheckedCount(unchecked);
+  };
 
-  }
 
   return (
     <div>
       <Title />
-      <Counters />
-
-
-
+      <Counters itemCount={itemCount} uncheckedCount={uncheckedCount} />
 
       <ButtonAddTodo onClick={addElements} />
       <div>
         {elements.map((element, index) => (
           <div key={index}>
             <input type="text" placeholder="Anote aqui."/>
-            <input type="checkbox"/>
+            <input type="checkbox" onChange={() => {
+              const newElements = [...elements];
+              newElements[index].checked = !newElements[index].checked;
+              setElements(newElements);
+              countUnchecked(newElements);
+            }}/>
             <button onClick={() => deleteElement(index)} className="deleteButton">DELETE</button>
           </div>
         ))}
